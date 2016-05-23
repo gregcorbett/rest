@@ -9,23 +9,22 @@ matrix:
     - python: "3.4"
   fast_finish: true
 
-# use the mysql service
-services:
-  - mysql
-
-# Route build to container-based infrastructure
-sudo: false
+# Route build to container-based infrastructu
+sudo: required
 # Cache the dependencies installed by pip
 cache: pip
 
 # Install defaults to "pip install -r requirements.txt"
 
 # Commands that prepare things for the test
+# install apel using experimental setup up script
 before_script:
-  # create an empty mysql database
-  - mysql -u root -e "create database apel_rest"
-  - mysql -u root apel_rest < schemas/cloud.sql
-  - export PYTHONPATH=$PYTHONPATH:`pwd -P`
+  - wget https://github.com/gregcorbett/apel/archive/apel-setup-script.zip
+  - unzip apel-setup-script.zip
+  - cd apel-apel-setup-script
+  - sudo python setup.py install
+  - cp /usr/local/lib/python2.7/dist-packages/apel-1.5.1-py2.7.egg /home/travis/virtualenv/python2.6.9/lib/python2.6/site-packages/apel-1.5.1-py2.6.egg
+  - export PYTHONPATH=$PYTHONPATH:`pwd -P`:/home/travis/virtualenv/python2.6.9/lib/python2.6:/home/travis/virtualenv/python2.6.9/lib/python2.6/site-packages
 
 # Command to run tests
 script: coverage run --source='.' manage.py test
