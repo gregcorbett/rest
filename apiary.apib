@@ -8,40 +8,41 @@ For an overview of the APEL REST API, please visit it's GitHub [page](https://gi
 ## Cloud Records [/api/v1/cloud/record]
 
 ### Post a new APEL-Cloud v0.2 Accounting Record[POST]
-
 + Request (text/plain)
     + Headers
-        SSL_CLIENT_S_DN: /C=XX/O=XXXXX/OU=XXXXX/L=XXXXX/CN=XXXXX
+
+            SSL_CLIENT_S_DN: /C=XX/O=XXXXX/OU=XXXXX/L=XXXXX/CN=XXXXX
 
     + Body
-        APEL-cloud-message: v0.2
-        VMUUID: https://cloud.cesga.es:3202/compute/47f74797-e9c9-46d7-b28d-5f87209239eb 2013-02-25 17:37:27+00:00
-        SiteName: CESGA
-        MachineName: one-2421
-        LocalUserId: 19
-        LocalGroupId: 101
-        GlobalUserName: NULL
-        FQAN: NULL
-        Status: completed
-        StartTime: 1361813847
-        EndTime: 1361813870
-        SuspendDuration: NULL
-        WallDuration: NULL
-        CpuDuration: NULL
-        CpuCount: 1
-        NetworkType: NULL
-        NetworkInbound: 0
-        NetworkOutbound: 0
-        Memory: 1000
-        Disk: NULL
-        StorageRecordId: NULL
-        ImageId: NULL
-        CloudType: OpenNebula
-        %%
-        ...another cloud record...
-        %%
-        ...
-        %%
+
+            APEL-cloud-message: v0.2
+            VMUUID: https://cloud.cesga.es:3202/compute/47f74797-e9c9-46d7-b28d-5f87209239eb 2013-02-25 17:37:27+00:00
+            SiteName: CESGA
+            MachineName: one-2421
+            LocalUserId: 19
+            LocalGroupId: 101
+            GlobalUserName: NULL
+            FQAN: NULL
+            Status: completed
+            StartTime: 1361813847
+            EndTime: 1361813870
+            SuspendDuration: NULL
+            WallDuration: NULL
+            CpuDuration: NULL
+            CpuCount: 1
+            NetworkType: NULL
+            NetworkInbound: 0
+            NetworkOutbound: 0
+            Memory: 1000
+            Disk: NULL
+            StorageRecordId: NULL
+            ImageId: NULL
+            CloudType: OpenNebula
+            %%
+            ...another cloud record...
+            %%
+            ...
+            %%
 
 + Response 202
 + Response 401
@@ -54,7 +55,8 @@ For an overview of the APEL REST API, please visit it's GitHub [page](https://gi
 
 + Request (text/plain)
     + Headers
-        Authorization: Bearer XXXXX
+
+            Authorization: Bearer XXXXX
 
 + Response 200
 
