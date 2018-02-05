@@ -2,13 +2,35 @@
 
 import logging
 import MySQLdb
-
+import os
+import tempfile
 from api.utils.TokenChecker import TokenChecker
 from django.core.urlresolvers import reverse
 from django.test import Client, TestCase
 from mock import patch
 
 QPATH_TEST = '/tmp/django-test/'
+
+# A test database config to use instead of the default,
+# to prevent unit tests running in the default database.
+DB_CONF = """[db]
+# type of database
+backend = mysql
+# host with database
+hostname = localhost
+# port to connect to
+port = 3306
+# database name
+name = test_apel_rest
+# database user
+username = root
+# password for database
+password =
+# how many records should be put/fetched to/from database
+# in single query
+records = 1000
+# option for summariser so that SummariseVMs is called
+type = cloud"""
 
 
 class CloudRecordSummaryGetTest(TestCase):
@@ -92,6 +114,15 @@ class CloudRecordSummaryGetTest(TestCase):
         # Add example data
         self._populate_database(database)
 
+        # Create an empty database config file
+        tmp_dir = tempfile.mkdtemp(prefix='tmp')
+        db_cfg_file, db_cfg_path = tempfile.mkstemp(prefix='db',
+                                                    dir=tmp_dir)
+
+        # Populate the empty database config with the test databse config
+        os.write(db_cfg_file, DB_CONF)
+        os.close(db_cfg_file)
+
         # Mock the functionality of the IAM
         mock_valid_token_to_id.return_value = 'TestService'
 
@@ -111,6 +142,7 @@ class CloudRecordSummaryGetTest(TestCase):
                              '"Month":7}]}')
 
         with self.settings(ALLOWED_FOR_GET='TestService',
+                           CLOUD_DB_CONF=db_cfg_path,
                            RETURN_HEADERS=["WallDuration",
                                            "Day",
                                            "Month",
@@ -123,6 +155,7 @@ class CloudRecordSummaryGetTest(TestCase):
                                         authZ_header_cont="Bearer TestToken")
             finally:
                 # Clean up after test.
+                os.remove(db_cfg_path)
                 self._clear_database(database)
                 database.close()
 
@@ -229,7 +262,7 @@ class CloudRecordSummaryGetTest(TestCase):
                              host='localhost',
                              user='root',
                              password='',
-                             name='apel_rest'):
+                             name='test_apel_rest'):
         """Connect to and return a cursor to the given database."""
         database = MySQLdb.connect(host, user, password, name)
         return database
