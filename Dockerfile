@@ -27,6 +27,9 @@ RUN yum -y install python-pip python-devel mysql mysql-devel gcc httpd httpd-dev
 # Copy APEL REST files to apache root
 COPY . /var/www/html/
 
+# Remove test suite from Docker image
+RUN rm -rf /var/www/html/api/tests/
+
 # Set the work diirectory to /var/www/html
 WORKDIR /var/www/html
 
